@@ -33,3 +33,6 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+
+# 调研脚本的本地真实配置（含密钥，不进版本库；样例见 research_config.example.toml）
+scripts/research_config.toml

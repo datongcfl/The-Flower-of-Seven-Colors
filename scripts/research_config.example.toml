@@ -1,0 +1,24 @@
+# 调研报告生成器 · 配置样例
+# 使用方式：把本文件复制为 research_config.toml，填入你自己的端点后运行。
+# （research_config.toml 含密钥，已被 .gitignore 忽略，不会进版本库）
+
+[exa]
+# Exa 免 key 的托管 MCP 端点（任意 MCP 客户端通用，GitHub OAuth 登录一次即可）
+url = "https://mcp.exa.ai/mcp"
+
+[firecrawl]
+# Firecrawl 远程 MCP 端点；API Key 直接内嵌在 URL 路径里（来自你自己的 firecrawl.dev 控制台）
+# 形式： https://mcp.firecrawl.dev/<你的FIRECRAWL_API_KEY>/v2/mcp
+url = "https://mcp.firecrawl.dev/<YOUR_FIRECRAWL_API_KEY>/v2/mcp"
+
+# 可选：大模型综合层（OpenAI 兼容接口）。
+# 不填 [llm] 则脚本输出“结构化调研简报”（带引用来源），不调用任何大模型。
+# 填了则用大模型把检索结果综合成叙述式长报告（需要你自己的 LLM 密钥）。
+[llm]
+base_url = "https://your-llm-endpoint/v1"
+api_key = "<YOUR_LLM_API_KEY>"
+model = "gpt-5.5"
+
+[report]
+# 报告输出目录（相对仓库根目录）
+output_dir = "docs"
