@@ -1,0 +1,35 @@
+# ─────────────────────────────────────────────
+# datongcfl-repository .gitignore
+# 目的：保持 Git 树轻量、可追溯、无噪声
+# ─────────────────────────────────────────────
+
+# 本地开源参考镜像（仅本地，不进版本控制）
+# 注意：克隆的第三方仓库各自带 LICENSE，整仓重新分发有合规风险，故仅本地保留
+/references/
+
+# 日志（克隆/修复脚本产生的运行日志）
+*.log
+
+# 临时脚本与探针（保留 scripts/ 下的正式脚本）
+/*_tmp*.ps1
+
+# 截图等二进制
+*.png
+*.jpg
+*.jpeg
+
+# 操作系统 / 编辑器噪声
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.swp
+*~
+.vscode/
+.idea/
+
+# Python 噪声
+__pycache__/
+*.pyc
+.venv/
+venv/
