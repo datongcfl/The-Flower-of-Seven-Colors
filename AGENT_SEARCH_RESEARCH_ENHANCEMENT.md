@@ -124,9 +124,13 @@ status: active
 1. **申请 Key**（均有免费额度）：
    - Firecrawl：firecrawl.dev 注册拿 `fc-...` Key
    - Exa：exa.ai 注册拿 `exa-...` Key
-2. **配置 MCP Server**：
-   - Firecrawl 官方提供 MCP Server（参考 `firecrawl/firecrawl` 仓库 "Power your agent" 章节，`npx firecrawl-mcp` 或等价方式）。
-   - Exa 可作为自定义 MCP / 直接 `exa-py` 封装成工具。
+2. **配置 MCP Server（本仓库已内置配置）**：
+   - 仓库根 `.mcp.json` 已声明 `exa` 与 `firecrawl` 两个 MCP Server，使用环境变量占位：
+     - `EXA_API_KEY` → Exa MCP（`exa-mcp-server`）
+     - `FIRECRAWL_API_KEY` → Firecrawl MCP（`firecrawl-mcp`）
+   - 把 `<YOUR_EXA_API_KEY>` / `<YOUR_FIRECRAWL_API_KEY>` 替换为真实 Key（或设置同名环境变量后由支持变量展开的客户端注入 `${EXA_API_KEY}`）。
+   - 详细步骤见 `mcp/README.md`；改完配置后部分客户端需重启以加载新 MCP Server。
+   - 另有托管远程免 npx 方式：Exa `https://mcp.exa.ai/mcp`；Firecrawl 参考官方 MCP 章节。
 3. **接入后行为变化**：
    - 搜索 → 走 Exa（语义召回 + 高效高亮）
    - 抓取 → 走 Firecrawl（JS 页、干净 Markdown、结构化 JSON）

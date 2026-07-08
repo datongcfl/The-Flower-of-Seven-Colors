@@ -13,6 +13,11 @@
   - `agents/互联网产品/云枢_AGENT.md` — 云枢 Agent 实例化定义（已脱敏）
 - 建立仓库级 `VERSION` 与 `CHANGELOG.md`，统一管理知识库版本。
 
+### 新增（搜索 / 模型能力增强）
+- `AGENT_LLM_OPTIMIZATION.md` — Agent LLM 优化（LiteLLM 统一网关 + DSPy 声明式调优 + OpenAI Cookbook 范例流水线），v0.1。
+- 仓库根 `.mcp.json` — 声明 Exa + Firecrawl 两个 MCP Server（环境变量占位，脱敏，不落真实密钥）。
+- `mcp/README.md` — MCP Server 启用步骤（本地 npx 与托管远程两种接入方式）。
+
 ### 修复（脱敏，因仓库为 public）
 - `AGENT_METHOD_REFERENCE.md`：移除本地绝对路径与内部 Agent 代号，统一泛化为「执行 / 审查 / 运维 / 编排 Agent」。
 - `AGENT_TUNING_ASSISTANT_ROLE.md`：移除本地知识库绝对路径，改为脱敏描述。
