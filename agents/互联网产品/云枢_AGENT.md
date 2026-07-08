@@ -4,6 +4,9 @@ description: 云枢（互联网产品）专业 Agent 定义。覆盖「需求→
 industry: 互联网产品
 product: 云枢 (YunShu)
 based_on: INTERNET_PRODUCT_AGENT_TEMPLATE + yunshu_github_agent_architecture_research + yunshu_internet_product_dev_lifecycle_research + yunshu_knowledge_protocol
+version: 0.1
+updated: 2026-07-08
+status: active
 ---
 
 # 云枢专业 Agent · 实例化定义

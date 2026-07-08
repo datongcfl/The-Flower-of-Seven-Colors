@@ -3,6 +3,9 @@ name: internet-product-agent-template
 description: 互联网产品开发专业 Agent 行业模板。当用户要为一个互联网产品（SaaS/工具/平台）构建或调优专业 agent，覆盖「需求→编码→测试→审查→发布→观测→复盘」全流水线时使用。use proactively
 industry: 互联网产品
 based_on: yunshu_internet_product_dev_lifecycle_research / yunshu_github_agent_architecture_research / AGENT_METHOD_REFERENCE
+version: 0.1
+updated: 2026-07-08
+status: active
 ---
 
 # 互联网产品专业 Agent · 行业模板
@@ -72,11 +75,11 @@ entry-packets/{ID}/  # brief.md + scope.json + constraints.md
 
 | 角色 | 对应 agent | 职责 | 工具权限（最小） |
 |------|-----------|------|----------------|
-| 编排者 Coordinator | 阿科 | 拆解、派单、监控、关单 | 读/写 Task Queue，禁直接改业务代码 |
-| 执行 Executor | 阿飞 | 代码实现 | Read/Edit/Write/Grep/Glob/Bash |
-| 审查 Reviewer | 小飞 | 代码审查、PR GATE | Read/Grep/Glob（**禁写**） |
-| 运维 Sentinel | 幺弟 | VPS 部署/回滚 | scripts/ VPS（隔离 worktree） |
-| 观察 Observer | 老幺 | VPS 只读检查 | Read only |
+| 编排者 Coordinator | 编排 Agent | 拆解、派单、监控、关单 | 读/写 Task Queue，禁直接改业务代码 |
+| 执行 Executor | 执行 Agent | 代码实现 | Read/Edit/Write/Grep/Glob/Bash |
+| 审查 Reviewer | 审查 Agent | 代码审查、PR GATE | Read/Grep/Glob（**禁写**） |
+| 运维 Sentinel | 运维 Agent | 生产服务器部署/回滚 | scripts/ VPS（隔离 worktree） |
+| 观察 Observer | 观察 Agent | 生产服务器只读检查 | Read only |
 
 **GATE 结论必须有明确状态**（仿 PR Review，不"看一眼"）：
 - `comment`：不阻塞，只建议

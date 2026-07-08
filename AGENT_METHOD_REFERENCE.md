@@ -1,3 +1,10 @@
+---
+title: AI Agent 方法论外部权威参考（整合版）
+version: 0.1
+updated: 2026-07-08
+status: active
+---
+
 # AI Agent 方法论外部权威参考（整合版）
 
 > 用途：优化团队多 Agent 体系的工作效率与方法。
@@ -28,10 +35,10 @@
 | 模式 | 机制 | 你们的对应场景 |
 |------|------|---------------|
 | **提示链 Prompt chaining** | 顺序步骤，中间可加程序化门控 | 对账流程：上传→配置→跑对账→看结果（已是固定链路） |
-| **路由 Routing** | 输入分类导向专用处理 | 把任务按业务域分到 阿飞/Codex/幺弟（你们靠人肉派单，可改为自动路由） |
+| **路由 Routing** | 输入分类导向专用处理 | 把任务按业务域分到 执行/辅助/运维 Agent（你们靠人肉派单，可改为自动路由） |
 | **并行化 Parallelization** | 子任务并行 + 程序化聚合 | 多个子代理同时扫不同文件域 / 多视角代码审查 |
-| **编排者-工作者 Orchestrator-workers** | 中央动态拆任务、派 worker、综合 | 阿科(coordinator) + 阿飞/小飞/幺弟(worker) 的现成拓扑 |
-| **评估者-优化器 Evaluator-optimizer** | 一模型生成、一模型评估反馈循环 | 小飞(code review) 对 阿飞(实现) 的审查-返工闭环 |
+| **编排者-工作者 Orchestrator-workers** | 中央动态拆任务、派 worker、综合 | 编排 Agent + 执行/审查/运维 Agent 的现成拓扑 |
+| **评估者-优化器 Evaluator-optimizer** | 一模型生成、一模型评估反馈循环 | 审查 Agent 对 执行 Agent 的审查-返工闭环 |
 
 > 关键区别：并行化子任务**预定义**；编排者-工作者子任务**由编排者按输入动态决定**（编码中改几个文件依赖具体任务，无法预定义）。
 
@@ -93,7 +100,7 @@ specific, actionable feedback on quality, security, and best practices.
 - 最小权限：审查代理禁 `Edit`/`Write`；简单任务路由 `haiku`。
 
 **对你们的落地启示**：
-- 把 小飞(reviewer) 做成 `tools: Read,Grep,Glob`(禁写) 的审查子代理；幺弟(运维) 用 `isolation: worktree` 避免脏主仓。
+- 把 审查 Agent 做成 `tools: Read,Grep,Glob`(禁写) 的审查子代理；运维 Agent 用 `isolation: worktree` 避免脏主仓。
 - 这与 `AGENT_PROTOCOL.md` 的「文件锁/最小权限」原则一致，但工程化成了配置而非口头约定。
 
 ---
@@ -113,7 +120,7 @@ specific, actionable feedback on quality, security, and best practices.
 
 ## 六、下一步建议（待董事长拍板）
 
-1. 将 `D:\福昶工作目录\_queue\` 任务队列真正落地（tasks/assignments/claims/events.jsonl + entry-packets）。
-2. 把 小飞/幺弟 等角色固化为子代理配置文件（.claude/agents/ 或等效），最小权限 + 自动委派。
+1. 将 `本地任务队列目录（路径脱敏）` 任务队列真正落地（tasks/assignments/claims/events.jsonl + entry-packets）。
+2. 把 审查/运维 Agent 等角色固化为子代理配置文件（.claude/agents/ 或等效），最小权限 + 自动委派。
 3. 精简 `AGENTS.md`/`AGENT_PROTOCOL.md` 为「最小必要集 + 按需检索」，缓解上下文腐烂。
 4. 给 `hotel-pms` 初始化 git 并补 `AGENTS.md`（当前无版本控制、无 Agent 上下文，是风险点）。
