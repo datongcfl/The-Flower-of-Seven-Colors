@@ -121,16 +121,15 @@ status: active
 
 要让当前 agent 真正获得 Exa / Firecrawl 能力，需：
 
-1. **申请 Key**（均有免费额度）：
-   - Firecrawl：firecrawl.dev 注册拿 `fc-...` Key
-   - Exa：exa.ai 注册拿 `exa-...` Key
+1. **Key 申请（仅 Firecrawl 需要）**：
+   - Firecrawl：firecrawl.dev 注册拿 `fc-...` Key。
+   - Exa：**免 Key**。直接用托管远程端点 `https://mcp.exa.ai/mcp`，默认工具（`web_search_exa` / `web_fetch_exa`）无需 `EXA_API_KEY`；首次连接部分客户端走 OAuth 登录，可用 GitHub 授权。
 2. **配置 MCP Server（本仓库已内置配置）**：
-   - 仓库根 `.mcp.json` 已声明 `exa` 与 `firecrawl` 两个 MCP Server，使用环境变量占位：
-     - `EXA_API_KEY` → Exa MCP（`exa-mcp-server`）
-     - `FIRECRAWL_API_KEY` → Firecrawl MCP（`firecrawl-mcp`）
-   - 把 `<YOUR_EXA_API_KEY>` / `<YOUR_FIRECRAWL_API_KEY>` 替换为真实 Key（或设置同名环境变量后由支持变量展开的客户端注入 `${EXA_API_KEY}`）。
+   - 仓库根 `.mcp.json` 已声明：
+     - `exa` → 托管端点 `url: "https://mcp.exa.ai/mcp"`（免 Key，OAuth/GitHub 登录）
+     - `firecrawl` → 本地 `npx -y firecrawl-mcp`，环境变量 `FIRECRAWL_API_KEY` 占位
+   - 把 `<YOUR_FIRECRAWL_API_KEY>` 替换为真实 Key（或设置同名环境变量后由支持变量展开的客户端注入 `${FIRECRAWL_API_KEY}`）。Exa 无需替换。
    - 详细步骤见 `mcp/README.md`；改完配置后部分客户端需重启以加载新 MCP Server。
-   - 另有托管远程免 npx 方式：Exa `https://mcp.exa.ai/mcp`；Firecrawl 参考官方 MCP 章节。
 3. **接入后行为变化**：
    - 搜索 → 走 Exa（语义召回 + 高效高亮）
    - 抓取 → 走 Firecrawl（JS 页、干净 Markdown、结构化 JSON）

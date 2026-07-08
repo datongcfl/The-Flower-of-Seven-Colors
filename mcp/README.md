@@ -5,10 +5,9 @@
 
 ## 前置
 
-- 已安装 Node.js（能跑 `npx`）。
-- 申请 Key（均有免费额度）：
-  - Exa：`exa.ai` 注册 → `exa-...`
-  - Firecrawl：`firecrawl.dev` 注册 → `fc-...`
+- Exa：**无需申请 Key**。改用托管远程端点 `https://mcp.exa.ai/mcp`，默认工具（`web_search_exa`、`web_fetch_exa`）免 Key；首次连接部分客户端走 OAuth 登录（支持 GitHub 授权）。可选 "Agent 工具" 才需显式 Key。
+- Firecrawl：需 Key（`firecrawl.dev` 注册 → `fc-...`；本机已配置 `FIRECRAWL_API_KEY`）。
+- 已安装 Node.js（能跑 `npx`，仅 Firecrawl 本地版需要）。
 
 ## 方式一：本地 npx（使用仓库 `.mcp.json`）
 
@@ -17,18 +16,16 @@
 ```json
 {
   "mcpServers": {
-    "exa":      { "command": "npx", "args": ["-y", "exa-mcp-server"], "env": { "EXA_API_KEY": "<YOUR_EXA_API_KEY>" } },
-    "firecrawl":{ "command": "npx", "args": ["-y", "firecrawl-mcp"],   "env": { "FIRECRAWL_API_KEY": "<YOUR_FIRECRAWL_API_KEY>" } }
+    "exa":      { "url": "https://mcp.exa.ai/mcp" },
+    "firecrawl":{ "command": "npx", "args": ["-y", "firecrawl-mcp"], "env": { "FIRECRAWL_API_KEY": "<YOUR_FIRECRAWL_API_KEY>" } }
   }
 }
 ```
 
-填入 Key 的两种方式（任选）：
-
-1. **直接替换占位符**：把 `<YOUR_EXA_API_KEY>` / `<YOUR_FIRECRAWL_API_KEY>` 改成真实 Key。
-   - ⚠️ 仅限本地使用；**不要把这个含真实 Key 的版本提交/推送**（仓库为 public）。
-2. **用环境变量注入**（推荐，保持 `.mcp.json` 干净）：
-   - 在 shell / 客户端环境设置 `EXA_API_KEY` 与 `FIRECRAWL_API_KEY`，并把 `.mcp.json` 里的值改为 `${EXA_API_KEY}` / `${FIRECRAWL_API_KEY}`（支持环境变量展开的客户端会读取）。
+- **Exa 免 Key**：直接用 `url` 托管端点即可，无需 `EXA_API_KEY`；首次连接若客户端弹出 OAuth，用 GitHub 授权登录。
+- **Firecrawl 需 Key**：两种填法（任选）：
+  1. **直接替换占位符**：把 `<YOUR_FIRECRAWL_API_KEY>` 改成真实 Key。⚠️ 仅限本地；**勿提交含真实 Key 的版本**（仓库为 public）。
+  2. **环境变量注入**（推荐）：在 shell / 客户端设置 `FIRECRAWL_API_KEY`，并把值改为 `${FIRECRAWL_API_KEY}`（支持变量展开的客户端会读取）。
 
 客户端加载：把 `.mcp.json` 放到仓库根（已就位），或合并进客户端的 `mcpServers` 配置块（如 `~/.cursor/mcp.json`、Claude 的 `claude_desktop_config.json`、VS Code 的 MCP 设置）。**改完配置需重启客户端**以加载新 Server。
 
