@@ -1,0 +1,54 @@
+# Agent 装备台 · 武器架（装备目录）样例
+# 复制本文件为 loadout_catalog.toml 填入你自己的真实端点即可使用（loadout_catalog.toml 不入库）。
+# 每件装备 = 一个可装配给 Agent 的 MCP server。
+# 字段说明：
+#   name          显示名
+#   category      分栏（决定格子的分区：侦察/工程/设计/项目管理…）
+#   type          mcp 连接类型（http / stdio）
+#   url           连接地址；需密钥者用 {KEY} 作占位符
+#   requires_key  true 时必须有对应密钥才能"激活"
+#   key_placeholder  url 中密钥占位符，默认 {KEY}
+#   desc          一句话说明
+
+[exa]
+name = "Exa 语义搜索"
+category = "侦察"
+type = "http"
+url = "https://mcp.exa.ai/mcp"
+requires_key = false
+desc = "按语义找页（免 key，零配置）"
+
+[firecrawl]
+name = "Firecrawl 净提取"
+category = "侦察"
+type = "http"
+url = "https://mcp.firecrawl.dev/{KEY}/v2/mcp"
+requires_key = true
+key_placeholder = "{KEY}"
+desc = "抓取/爬取/整站提取为干净 markdown"
+
+# 以下 url 为示意端点，请替换为你自己客户端的真实 MCP URL
+[github]
+name = "GitHub"
+category = "工程"
+type = "http"
+url = "https://api.githubcopilot.com/mcp/"
+requires_key = false
+desc = "仓库/Issue/PR 操作（示例端点，请替换）"
+
+[magic]
+name = "Magic 组件"
+category = "设计"
+type = "http"
+url = "https://mcp.magic.ai/mcp"
+requires_key = false
+desc = "UI 组件生成（示例端点，请替换）"
+
+[tapd]
+name = "TAPD"
+category = "项目管理"
+type = "http"
+url = "https://mcp.tapd.cn/mcp"
+requires_key = true
+key_placeholder = "{KEY}"
+desc = "需求/缺陷/迭代管理（示例端点，请替换）"

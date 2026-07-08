@@ -104,21 +104,45 @@
 
 ---
 
-## 6. 实现落点（计划）
+## 6. 实现落点（已落地 v0.1）
 
-| 文件 | 作用 | 状态 |
+> 已勘察仓库：Agent 当前是 **Markdown + YAML frontmatter**（如 `agents/互联网产品/云枢_AGENT.md`），工具/MCP 装备**没有机器可读清单**，只在角色表里用自然语言描述"工具权限"。
+> 结论：**装备不写进 Agent 的 Markdown 定义**，而是独立成"装备栏"文件，与 Markdown 并存、互不破坏。
+
+### 文件结构（已实现）
+| 文件 | 作用 | 入库 |
 |------|------|------|
-| `docs/AGENT_LOADOUT_BOARD.md` | 本概念文档 + 竞品依据 | ✅ 草案 |
-| `scripts/agent_loadout.py` | 独立 CLI/TUI 装备台（列格、选装、写配置、显状态） | ⬜ 待细节打磨后实现 |
-| `scripts/loadout_catalog.example.toml` | 装备目录样例（无密钥，可分发） | ⬜ 待实现 |
-| `scripts/loadout_catalog.toml` | 本地真实目录（含密钥，gitignore） | ⬜ 待实现 |
+| `docs/AGENT_LOADOUT_BOARD.md` | 本概念文档 + 竞品依据 | ✅ |
+| `scripts/agent_loadout.py` | 独立 CLI 装备台（init/list/equip/unequip/apply） | ✅ |
+| `scripts/loadout_catalog.example.toml` | 武器架样例（无密钥，可分发） | ✅ |
+| `scripts/loadout_catalog.toml` | 本地真实武器架（填自己端点，gitignore） | ❌ 本地 |
+| `scripts/loadout_secrets.example.toml` | 本地密钥样例（无真实值） | ✅ |
+| `scripts/loadout_secrets.toml` | 本地真实密钥（gitignore） | ❌ 本地 |
+| `scripts/agent_loadouts/<agent>.loadout.toml` | 每个 Agent 的装备栏（选装了哪些 id） | ❌ 本地 |
+| `scripts/agent_loadouts/<agent>.mcp.json` | `apply` 生成的标准 MCP 配置，交给任意客户端 | ❌ 本地 |
+
+### 数据模型（已决）
+- **武器架** `loadout_catalog.toml` 每件装备字段：`name` / `category`（分栏）/ `type`（http|stdio）/ `url`（需密钥者用 `{KEY}` 占位）/ `requires_key` / `key_placeholder`（默认 `{KEY}`）/ `desc`
+- **装备栏** `<agent>.loadout.toml`：`agent` + `equip = [id, ...]`
+- **状态灯判定**：未装→`未装`；已装且(无需密钥或本地有密钥)→`已连`(绿)；已装但需密钥且本地无密钥→`需密钥`(黄)
+- **apply**：把装备栏生成标准 `mcp.json`，url 中 `{KEY}` 用本地 secrets 替换；缺密钥者安全跳过
+
+### 用法
+```powershell
+python scripts/agent_loadout.py init <agent>          # 建空装备栏
+python scripts/agent_loadout.py equip <agent> exa firecrawl   # 上装
+python scripts/agent_loadout.py list <agent>          # 格子视图看状态
+python scripts/agent_loadout.py apply <agent>         # 生成 mcp.json
+python scripts/agent_loadout.py unequip <agent> tapd  # 卸下
+```
+依赖仅 Python 标准库（tomllib 读；toml 写为手写），别人 clone 即用。
 
 ### 待打磨的细节（TODO）
-- 一件"装备"在目录里要描述哪些字段（name / type / url-or-command / category / requires_key / deps）
-- Agent 配置真实存在哪、格式如何（需先勘察仓库 agent 定义文件）
-- 装/卸时是改 MCP 配置还是别的层
-- 格子视图的终端渲染方式
-- 是否提供"职业预设"（侦察兵 = Exa+Firecrawl 等）一键套用
+- [ ] 一件装备的 `deps`（依赖，如 research 套装需 Exa+Firecrawl 成对）
+- [ ] "职业预设"：侦察兵=Exa+Firecrawl 等一键套用（equip --preset scout）
+- [ ] 格子视图升级为 TUI（方向键选装）或 Web
+- [ ] 把装备栏 id 反写回 Agent 的 Markdown frontmatter（可选，便于人读）
+- [ ] 多客户端导出（CodeBuddy / Claude Desktop / Cursor 各自的 mcp 路径）
 
 ---
 

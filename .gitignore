@@ -36,3 +36,8 @@ venv/
 
 # 调研脚本的本地真实配置（含密钥，不进版本库；样例见 research_config.example.toml）
 scripts/research_config.toml
+
+# 装备台的本地真实配置与装备栏（含密钥/选择，不进版本库；样例见 *example.toml）
+scripts/loadout_catalog.toml
+scripts/loadout_secrets.toml
+scripts/agent_loadouts/
