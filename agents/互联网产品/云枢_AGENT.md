@@ -10,7 +10,7 @@ based_on: INTERNET_PRODUCT_AGENT_TEMPLATE + yunshu_github_agent_architecture_res
 
 > 由 `agents/互联网产品/INTERNET_PRODUCT_AGENT_TEMPLATE.md` 实例化而来。
 > 一句话架构：`云枢 = 确定性 Workflow + 可替换 Agent Pool + Artifact-first 交付 + 可观测运维面板`。
-> 当前事实只认：`VERSION` 文件、`DEPLOYMENT_STATE.json`、`OPERATION_LOCK.json`、`/api/health`；聊天记录/agent memory/飞书历史不作为版本依据。
+> 当前事实只认：版本文件 + 部署状态文件 + 操作锁文件 + 健康接口（以项目约定的权威状态源为准）；聊天记录/agent memory 不作为版本依据。
 
 ---
 
@@ -19,7 +19,7 @@ based_on: INTERNET_PRODUCT_AGENT_TEMPLATE + yunshu_github_agent_architecture_res
 | 占位符 | 值 |
 |--------|-----|
 | `{{产品名}}` | 云枢 YunShu（自托管 coding-agent 控制面 / 互联网产品） |
-| `{{仓库}}` | `D:\福昶工作目录` 工作区；VPS `/opt/reconciliation` |
+| `{{仓库}}` | 本地工作区（路径脱敏） + 生产服务器 VPS（路径脱敏） |
 | `{{技术栈}}` | Python(FastAPI/Flask) + 前端 + SQLite/PostgreSQL；Task Queue 文件即协议 |
 | `{{入口}}` | 飞书消息、GitHub Issue、定时任务、webhook → 统一落 Task Queue（飞书消息先转结构化任务，不直接当开发任务） |
 | `{{审批人}}` | 董事长（高风险动作 L3 默认拒绝，需审批） |
@@ -30,7 +30,7 @@ based_on: INTERNET_PRODUCT_AGENT_TEMPLATE + yunshu_github_agent_architecture_res
 
 **可信级别（从高到低）**：
 1. 一手官方文档：GitHub Docs（Issues/PR/Actions/Security）、框架官方文档、release/tag/commit。
-2. 本地当前事实：`AGENTS.md` / `AGENT_PROTOCOL.md` / `ENGINEERING.md` / `VERSION` / `VPS_PROTOCOL.md` / `DEPLOYMENT_STATE.json` / `OPERATION_LOCK.json` / `/api/health`。
+2. 本地当前事实：项目约定的权威文件（`AGENTS.md` / `AGENT_PROTOCOL.md` / `ENGINEERING.md` / 版本文件 / VPS 操作协议 / 部署状态 / 操作锁 / 健康接口）。
 3. 外部参考（Resources 层）：仅参考，引用标"外部资料"，提炼后晋升 Assets。
 4. 专家确认：规则不明标 `{{待专家确认}}`，不编造。
 
@@ -78,11 +78,11 @@ entry-packets/{ID}/  # brief.md + scope.json + constraints.md
 
 | 角色 | agent | 职责 | 工具权限（最小） |
 |------|-------|------|----------------|
-| 编排者 Coordinator | 阿科 | 拆解、派单、监控、关单 | 读/写 Task Queue，禁直接改业务代码 |
-| 执行 Executor | 阿飞 | 代码实现 | Read/Edit/Write/Grep/Glob/Bash |
-| 审查 Reviewer | 小飞 | 代码审查、GATE | Read/Grep/Glob（**禁写**） |
-| 运维 Sentinel | 幺弟 | VPS 部署/回滚 | scripts/ VPS（隔离 worktree） |
-| 观察 Observer | 老幺 | VPS 只读检查 | Read only |
+| 编排者 Coordinator | 编排 Agent | 拆解、派单、监控、关单 | 读/写 Task Queue，禁直接改业务代码 |
+| 执行 Executor | 执行 Agent | 代码实现 | Read/Edit/Write/Grep/Glob/Bash |
+| 审查 Reviewer | 审查 Agent | 代码审查、GATE | Read/Grep/Glob（**禁写**） |
+| 运维 Sentinel | 运维 Agent | 生产服务器部署/回滚 | scripts/ VPS（隔离 worktree） |
+| 观察 Observer | 观察 Agent | 生产服务器只读检查 | Read only |
 
 **GATE 结论四态**（仿 PR Review，不"看一眼"）：
 - `pass`：可合并/可上线
@@ -125,7 +125,7 @@ changed_files / diff_summary / tests_run / test_result / commit_message建议 / 
 - 高风险动作（推送、删库、外发、生产部署）→ **L3 默认拒绝**，需董事长审批；审批记录：为什么/谁/审批前状态/审批后动作/超时处理/结果回事件链。
 - 代码执行类任务默认 sandbox / 固定 workspace，不让 agent 随意访问全盘。
 - 不硬编码密钥；不假设版本——以 `VERSION` / `/api/health` 为准。
-- 触 VPS `/opt/reconciliation`：必须先读 `VPS_PROTOCOL.md` / `VERSION` / `DEPLOYMENT_STATE.json` / `OPERATION_LOCK.json` / `/api/health`，否则结果不作数。
+- 触生产服务器（VPS）：必须先读 VPS 操作协议 / 版本文件 / 部署状态 / 操作锁 / 健康接口，否则结果不作数。
 
 ---
 
@@ -157,7 +157,7 @@ changed_files / diff_summary / tests_run / test_result / commit_message建议 / 
 
 ## 9. 云枢开发硬规则（压缩版，待确认后入 VPS）
 
-> 以下由 yunshu 研究压缩，建议经用户确认后同步 `YUNSHU_ALPHA_RUNBOOK.md` / `YUNSHU_AGENT_HANDOFF.md`，并被 `yunshu_v1_check.py` 自动验证。
+> 以下由 yunshu 研究压缩，建议经用户确认后同步项目交接文档，并被版本自检脚本自动验证。
 
 1. 所有需求先转任务，不直接让 agent 改代码；任务必有验收标准；大需求拆子任务且能表达依赖。
 2. 新功能先有最小设计（数据结构/接口/页面/权限/失败路径）；Agent 只补设计，不替代产品判断。
