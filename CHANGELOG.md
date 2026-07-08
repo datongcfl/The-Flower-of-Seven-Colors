@@ -15,7 +15,7 @@
 
 ### 新增（搜索 / 模型能力增强）
 - `AGENT_LLM_OPTIMIZATION.md` — Agent LLM 优化（LiteLLM 统一网关 + DSPy 声明式调优 + OpenAI Cookbook 范例流水线），v0.1。
-- 仓库根 `.mcp.json` — 声明 Exa + Firecrawl 两个 MCP Server（环境变量占位，脱敏，不落真实密钥）。
+- 仓库根 `.mcp.json` — 声明 Exa + Firecrawl 两个 MCP Server。Exa 走托管远程端点 `https://mcp.exa.ai/mcp`，**免 Key（OAuth/GitHub 登录）**；Firecrawl 本地 npx + `FIRECRAWL_API_KEY` 占位（脱敏，不落真实密钥）。
 - `mcp/README.md` — MCP Server 启用步骤（本地 npx 与托管远程两种接入方式）。
 
 ### 修复（脱敏，因仓库为 public）
